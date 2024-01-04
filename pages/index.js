@@ -5,20 +5,27 @@ import Link from 'next/link';
 import { useRecoilState } from 'recoil';
 import { tokenState, userState } from '../src/store';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useAxios } from '../src/axios';
 
 export default function Home() {
   const [user, setUser] = useRecoilState(userState);
   const [token, setToken] = useRecoilState(tokenState);
   const { register, handleSubmit } = useForm();
   const router = useRouter();
+  const api = useAxios();
 
   const onClickSubmit = async (data) => {
-    const result = await axios.post('http://localhost:8001/auth/login', data)
-    setUser(result.data.user)
-    setToken(result.data.token)
-    console.log(result.data.token)
+    const result = await axios.post('http://localhost:8001/auth/login', data, { withCredentials: true })
+    setUser(result.data.user);
+    setToken(result.data.token);
   };
-  console.log(user)
+
+  const logintest = async () => {
+    const result = await api.get('http://localhost:8001/post/test')
+    console.log(result)
+  }
+
   return (
     <S.MainWrapper>
       <S.MainContent>
@@ -34,7 +41,11 @@ export default function Home() {
         }
         <button onClick={() => router.push('/board')}>asd</button>
       </S.MainContent>
+
+      <button onClick={logintest}> 로그인 테스트 </button>
     </S.MainWrapper>
   )
 }
+
+
 
