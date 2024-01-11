@@ -9,9 +9,8 @@ import { useRouter } from 'next/router';
 export default function Home() {
   // const [user, setUser] = useRecoilState(userState)
   const [fileList, setFileList] = useState([]);
-  const [user,] = useRecoilState(userState);
-  const [token] = useRecoilState(tokenState);
   const [content, setContent] = useState();
+  const [title, setTitle] = useState();
   const api = useAxios();
   const formData = new FormData();
   const router = useRouter();
@@ -24,8 +23,6 @@ export default function Home() {
   };
 
   const onClickSubmit = async (event) => {
-    // formData.append('UserId', user.userid);
-    // formData.append('content', content);
     event.preventDefault()
     formData.append('img', fileList[0]);
     const result = await api.post('http://localhost:8001/post/img', formData, {
@@ -34,12 +31,12 @@ export default function Home() {
         charset: "utf-8",
       }
     })
-    // console.log(result.data.url, content)
 
     const result2 = await api.post('http://localhost:8001/post',
       {
-        img: result.data.url,
+        title,
         content,
+        img: result.data.url,
       })
     console.log(result2)
   };
@@ -49,10 +46,15 @@ export default function Home() {
     setContent(data.target.value)
   }
 
+  const onChangetitle = (data) => {
+    setTitle(data.target.value)
+  }
+
   return (
     <S.MainWrapper>
       <S.MainContent>
         <form onSubmit={onClickSubmit}>
+          제목 : <input type="text" onChange={onChangetitle} /><br />
           내용 : <input type="text" onChange={onChangeContent} /><br />
           파일 : <input type="file" onChange={handleFileChange} /><br />
           <button>제출</button>
