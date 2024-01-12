@@ -1,9 +1,15 @@
+import { globalStyles } from '../styles/global.style';
+import Layout from '../src/layout';
 import { RecoilRoot } from 'recoil';
+import { Global } from '@emotion/react';
 
 export default function App({ Component, pageProps }) {
   return (
     <RecoilRoot>
-      <Component {...pageProps} />
+      <Global styles={globalStyles} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </RecoilRoot>
   )
 }

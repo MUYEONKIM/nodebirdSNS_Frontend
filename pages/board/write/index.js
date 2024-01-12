@@ -50,14 +50,14 @@ export default function Home() {
   return (
     <S.MainWrapper>
       <S.MainContent>
-        <S.TableTop />
-        <S.Row>
-          <S.ColumnHeaderBasic>ID</S.ColumnHeaderBasic>
-          <S.ColumnHeaderTitle>제목</S.ColumnHeaderTitle>
-          <S.ColumnHeaderBasic>작성자</S.ColumnHeaderBasic>
-          <S.ColumnHeaderBasic>날짜</S.ColumnHeaderBasic>
-        </S.Row>
+        <form onSubmit={onClickSubmit}>
+          제목 : <input type="text" onChange={onChangetitle} /><br />
+          내용 : <input type="text" onChange={onChangeContent} /><br />
+          파일 : <input type="file" onChange={handleFileChange} /><br />
+          <button>제출</button>
+        </form>
       </S.MainContent>
+      <button onClick={() => { router.push('/boarddetail') }}>wfqwwqf</button>
     </S.MainWrapper>
 
   )
