@@ -13,8 +13,7 @@ export const MainContent = styled.section`
   display: flex;
   flex-direction: column;
   padding: 50px;
-  height: 500px;
-  width: 700px;
+  width: 800px;
 `
 
 export const TableTop = styled.div`
@@ -35,17 +34,17 @@ export const Row = styled.div`
 `;
 
 export const ColumnHeaderBasic = styled.div`
-  width: 10%;
+  width: 15%;
   text-align: center;
 `;
 
 export const ColumnHeaderTitle = styled.div`
-  width: 70%;
+  width: 55%;
   text-align: center;
 `;
 
 export const ColumnBasic = styled.div`
-  width: 10%;
+  width: 15%;
   text-align: center;
   overflow: hidden;
   white-space: nowrap;
@@ -53,7 +52,7 @@ export const ColumnBasic = styled.div`
 `;
 
 export const ColumnTitle = styled.div`
-  width: 70%;
+  width: 55%;
   text-align: center;
   cursor: pointer;
 
@@ -61,3 +60,17 @@ export const ColumnTitle = styled.div`
     color: blue;
   }
 `;
+
+export const ContentTop = styled.section`
+  width: 100%;
+  display: flex;
+`
+
+export const SearchButton = styled.button`
+  margin-left: 2px;
+`
+
+export const WriteButton = styled.button`
+  margin-left: auto;
+  width: 10%;
+`

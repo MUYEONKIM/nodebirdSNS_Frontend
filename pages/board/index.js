@@ -1,55 +1,80 @@
 import * as S from '../../styles/board.style'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAxios } from '../../src/axios';
 import { useRouter } from 'next/router';
+import { getDate } from '../../src/getDate';
+import Paginations from '../../src/pagnation/pagnation.presenter';
 
 export default function Home() {
-  // const [user, setUser] = useRecoilState(userState)
-  const [fileList, setFileList] = useState([]);
-  const [content, setContent] = useState();
-  const [title, setTitle] = useState();
+  useEffect(() => {
+    const getData = async () => {
+      const result = await api.get('/board/posts', {
+      })
+      setData(result?.data);
+    };
+    getData()
+  }, [])
+  const [data, setData] = useState();
+  const [search, setSearch] = useState();
+  const [startPage, setStartPage] = useState(1);
+  const [activedPage, setActivedPage] = useState(1);
+  const lastPage = Math.ceil((data?.length ?? 10) / 10);
+
   const api = useAxios();
-  const formData = new FormData();
   const router = useRouter();
 
-  const handleFileChange = (event) => {
-    const files = event.target.files;
-    const newFileList = Array.from(files);
-    setFileList(newFileList);
+  const onClickRouter = () => (query) => {
+    router.push(`/board/${query.target.id}`)
+  }
 
+  const onChangeSearch = (data) => {
+    setSearch(data.target.value);
   };
 
-  const onClickSubmit = async (event) => {
-    event.preventDefault()
-    formData.append('img', fileList[0]);
-    const result = await api.post('http://localhost:8001/post/img', formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        charset: "utf-8",
-      }
-    })
-
-    const result2 = await api.post('http://localhost:8001/post',
+  const getSearchData = async (data) => {
+    let page = data.page
+    console.log(page)
+    const result = await api.get('/board/posts',
       {
-        title,
-        content,
-        img: result.data.url,
+        params: {
+          search,
+          page: page
+        }
       })
-    console.log(result2)
+    setData(result?.data);
   };
 
+  const onClickPage = (event) => {
+    const activedPage = event.currentTarget.id;
+    setActivedPage(activedPage);
+    getSearchData({ page: activedPage });
+  };
 
-  const onChangeContent = (data) => {
-    setContent(data.target.value)
-  }
+  const onClickPrevPage = () => {
+    if (startPage === 1) return;
+    setStartPage(startPage - 10);
+    setActivedPage(startPage - 10);
+    getSearchData({ page: startPage - 10 });
+  };
 
-  const onChangetitle = (data) => {
-    setTitle(data.target.value)
-  }
+  const onClickNextPage = () => {
+    if (startPage + 10 <= lastPage) {
+      setStartPage(startPage + 10);
+      setActivedPage(startPage + 10);
+      getSearchData({ page: startPage + 10 });
+    }
+  };
 
   return (
     <S.MainWrapper>
       <S.MainContent>
+        <S.ContentTop>
+          <>
+            <input placeholder="검색어를 입력하세요." onChange={onChangeSearch} />
+            <S.SearchButton onClick={getSearchData}>검색</S.SearchButton>
+          </>
+          <S.WriteButton onClick={() => router.push('/board/write')}>글쓰기</S.WriteButton>
+        </S.ContentTop>
         <S.TableTop />
         <S.Row>
           <S.ColumnHeaderBasic>ID</S.ColumnHeaderBasic>
@@ -57,9 +82,31 @@ export default function Home() {
           <S.ColumnHeaderBasic>작성자</S.ColumnHeaderBasic>
           <S.ColumnHeaderBasic>날짜</S.ColumnHeaderBasic>
         </S.Row>
+        {data?.payload.map((el) => (
+          <S.Row key={el.id} onClick={onClickRouter(el.id)}>
+            <S.ColumnBasic>
+              {el.id}
+            </S.ColumnBasic>
+            <S.ColumnTitle
+              id={el.id}
+            >
+              {el.title}
+            </S.ColumnTitle>
+            <S.ColumnBasic>{el.User.nick}</S.ColumnBasic>
+            <S.ColumnBasic>{getDate(el.createdAt)}</S.ColumnBasic>
+          </S.Row>
+        ))}
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "3%" }}>
+          <Paginations
+            startPage={startPage}
+            lastPage={lastPage}
+            activedPage={activedPage}
+            onClickPage={onClickPage}
+            onClickPrevPage={onClickPrevPage}
+            onClickNextPage={onClickNextPage} />
+        </div>
       </S.MainContent>
     </S.MainWrapper>
-
   )
 }
 {/* 

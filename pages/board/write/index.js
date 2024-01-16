@@ -1,63 +1,76 @@
-import * as S from '../../styles/board.style'
+import 'react-quill/dist/quill.snow.css';
+import * as S from '../../../styles/boardWrite.style'
 import { useState } from 'react';
-import { useAxios } from '../../src/axios';
+import { useAxios } from '../../../src/axios';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
 export default function Home() {
-  // const [user, setUser] = useRecoilState(userState)
   const [fileList, setFileList] = useState([]);
-  const [content, setContent] = useState();
+  const [content, setContent] = useState("");
   const [title, setTitle] = useState();
   const api = useAxios();
   const formData = new FormData();
   const router = useRouter();
 
+  const ReactQuill = dynamic(async () => await import("react-quill"), {
+    ssr: false
+  });
+
   const handleFileChange = (event) => {
     const files = event.target.files;
     const newFileList = Array.from(files);
     setFileList(newFileList);
-
   };
 
   const onClickSubmit = async (event) => {
-    event.preventDefault()
     formData.append('img', fileList[0]);
-    const result = await api.post('http://localhost:8001/post/img', formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        charset: "utf-8",
-      }
-    })
-
-    const result2 = await api.post('http://localhost:8001/post',
-      {
-        title,
-        content,
-        img: result.data.url,
+    try {
+      const result = await api.post('http://localhost:8001/post/img', formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          charset: "utf-8",
+        }
       })
-    console.log(result2)
+
+      const result2 = await api.post('http://localhost:8001/post',
+        {
+          title,
+          content,
+          img: result.data.url,
+        })
+      console.log(result2)
+    } catch (error) {
+      console.error(error.message)
+    }
   };
 
 
   const onChangeContent = (data) => {
-    setContent(data.target.value)
+    console.log(data)
   }
 
   const onChangetitle = (data) => {
     setTitle(data.target.value)
   }
-
+  console.log(content)
   return (
     <S.MainWrapper>
       <S.MainContent>
         <form onSubmit={onClickSubmit}>
-          제목 : <input type="text" onChange={onChangetitle} /><br />
-          내용 : <input type="text" onChange={onChangeContent} /><br />
+          <S.title type="text" onChange={onChangetitle} placeholder='제목을 입력하세요' /><br />
+          <ReactQuill
+            style={{
+              width: "100%",
+              height: "480px",
+              marginBottom: "60px",
+            }}
+            onChange={onChangeContent}
+          />
           파일 : <input type="file" onChange={handleFileChange} /><br />
           <button>제출</button>
         </form>
       </S.MainContent>
-      <button onClick={() => { router.push('/boarddetail') }}>wfqwwqf</button>
     </S.MainWrapper>
 
   )
