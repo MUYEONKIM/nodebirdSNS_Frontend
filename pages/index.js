@@ -38,12 +38,9 @@ export default function Home() {
     setToken();
     console.log(result)
   }
+  // 내가 쓴 게시물
+  // 찜한 게시물
 
-  // payload의 comments 배열에 담김
-  // const qwe = async () => {
-  //   const result = await api.post('/v2/post', { contentId: 3 })
-  //   console.log(result)
-  // }
   return (
     <S.MainWrapper>
       <S.MainContent>

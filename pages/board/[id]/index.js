@@ -33,6 +33,12 @@ export default function BoardDetail() {
     setContent(result.data.payload)
   }
 
+  const onClickUpdate = async () => {
+    await api.patch(`/board/post/${router.query.id}`, {
+      title: "수정됬나?"
+    })
+  }
+
   return (
     <S.MainWrapper>
       <S.MainContent>
@@ -41,6 +47,7 @@ export default function BoardDetail() {
           {getDate(content?.createdAt)}
         </S.ContentTop>
         <S.TableTop />
+        <button onClick={() => router.push(`${router.asPath}/edit`)}>수정</button>
         <S.ContentMiddle>
           <p>
             {content?.content}
