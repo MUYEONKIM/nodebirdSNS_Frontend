@@ -22,6 +22,18 @@ export const TableTop = styled.div`
   margin-top: 20px;
 `;
 
+export const AlertSection = styled.section`
+ margin-top: 10px;
+ display: flex;
+ width : 100% ;
+ justify-content: flex-end;
+`
+
+export const AlertButton = styled.p`
+  color: gray;
+  cursor: pointer;
+`
+
 export const ContentTop = styled.section`
   width: 100%;
   display: flex;
@@ -67,7 +79,18 @@ export const CommentWriter = styled.p`
 `
 
 export const CommentContent = styled.p`
-border-bottom: 1px solid;
+  border-bottom: 1px solid;
   padding-bottom: 3%;
 `
 
+export const CommentAlter = styled.section`
+ display: flex;
+ width : 100% ;
+ justify-content: flex-end;
+ margin-bottom: 10px;
+`
+
+export const CommentAlterBtn = styled.p`
+  color: gray;
+  cursor: pointer;
+`

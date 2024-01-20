@@ -1,8 +1,9 @@
 import { useAxios } from "../../../src/axios"
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import * as S from "../../../styles/boardDetail.style";
 import { getDate } from "../../../src/getDate";
+import BoardComment from "../../../src/boardComment";
 
 export default function BoardDetail() {
   const router = useRouter();
@@ -30,15 +31,21 @@ export default function BoardDetail() {
   const onClickComment = async () => {
     await api.post('/post/comment', { comment, PostId: content.id });
     const result = await api.get(`/board/post/${router.query.id}`);
-    setContent(result.data.payload)
+    setContent(result.data.payload);
+    setComment();
   }
 
-  const onClickUpdate = async () => {
-    await api.patch(`/board/post/${router.query.id}`, {
-      title: "수정됬나?"
-    })
-  }
+  const onClickDelete = async () => {
+    const confirmflag = confirm("정말 삭제하시겠습니까?");
 
+    if (confirmflag) {
+      const result = await api.delete(`/board/post/${router.query.id}`);
+      console.log(result)
+      router.push("/board")
+    } else {
+      return
+    }
+  }
   return (
     <S.MainWrapper>
       <S.MainContent>
@@ -47,7 +54,10 @@ export default function BoardDetail() {
           {getDate(content?.createdAt)}
         </S.ContentTop>
         <S.TableTop />
-        <button onClick={() => router.push(`${router.asPath}/edit`)}>수정</button>
+        <S.AlertSection>
+          <S.AlertButton onClick={() => router.push(`${router.asPath}/edit`)}>수정&nbsp;</S.AlertButton>
+          <S.AlertButton onClick={onClickDelete}>/ 삭제</S.AlertButton>
+        </S.AlertSection>
         <S.ContentMiddle>
           <p>
             {content?.content}
@@ -55,33 +65,12 @@ export default function BoardDetail() {
           <S.ContentImg src={`http://localhost:8001${content?.img}`} />
         </S.ContentMiddle>
         <S.TableBotton />
-        <S.CommentInput onChange={onChangeComment} placeholder="댓글을 등록해주세요." /><S.CommentButton onClick={onClickComment}>등록</S.CommentButton>
+        <S.CommentInput onChange={onChangeComment} placeholder="댓글을 등록해주세요." />
+        <S.CommentButton onClick={onClickComment}>등록</S.CommentButton>
         {content?.Comments.map((el, index) => (
-          <S.CommentWrapper key={index}>
-            <S.CommentWriter>
-              {el.UserId}
-            </S.CommentWriter>
-            <S.CommentContent>
-              {el.comment}
-            </S.CommentContent>
-          </S.CommentWrapper>
+          <BoardComment el={el} index={index} setContent={setContent} />
         ))}
       </S.MainContent>
-      {/* <button onClick={onClickButton}>게시글 목록리스트</button>
-      <button onClick={onClickButton2}>asdwdw asd</button>
-      <input onChange={onChangeSearch} /> */}
-      {/* {contents.map((el) => (
-        <div style={{ border: "1px solid" }} key={el.id}>
-          <div>{el.content}</div>
-          <img src={`http://localhost:8001${el.img}`} />
-          <div>좋아요 : </div>
-          <button onClick={onClickButton3(el.UserId)}>팔로우 버튼</button>
-          <div>댓글창
-            <input onChange={onChangeComment} />
-            <button onClick={onClickComment(el.id)}>댓글 등록하기</button>
-          </div>
-        </div>
-      ))} */}
     </S.MainWrapper>
   )
 }

@@ -18,7 +18,6 @@ export const MainContent = styled.section`
 `
 
 export const JoinContent = styled.section`
-  border: 1px solid white;
   border-radius: 15px;
   background-color: black;
   display: flex;
@@ -56,14 +55,6 @@ export const LoginButton = styled.button`
 
 export const title = styled.p`
   font-size: 2em;
-  color: white;
-`
-
-export const userContent = styled.section`
-  border: 1px solid red;
-`
-
-export const userTitle = styled.h2`
   color: white;
 `
 
