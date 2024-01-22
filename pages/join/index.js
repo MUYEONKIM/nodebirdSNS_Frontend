@@ -8,16 +8,20 @@ export default function Home() {
   const { register, handleSubmit } = useForm();
 
   const onClickSubmit = async (data) => {
-    if (data.password !== data.confirm) {
-      alert("비밀번호가 일치하지 않습니다.")
-      return
+    try {
+      if (data.password !== data.confirm) {
+        alert("비밀번호가 일치하지 않습니다.")
+        return
+      }
+      const newdata = { ...data }
+      delete newdata.confirm
+      const result = await axios.post('http://localhost:8001/auth/join', data)
+      // console.log(result)
+      alert(result.data)
+      router.push('/')
+    } catch (error) {
+      alert(error.response.data.message)
     }
-    const newdata = { ...data }
-    delete newdata.confirm
-    const result = await axios.post('http://localhost:8001/auth/join', data)
-    console.log(result)
-    alert(result.data)
-    router.push('/')
   };
   return (
     <S.MainWrapper>

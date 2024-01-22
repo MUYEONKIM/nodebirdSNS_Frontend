@@ -2,7 +2,8 @@ import styled from "@emotion/styled";
 
 export const MainWrapper = styled.section`
   display: flex;
-  align-items: center;
+  height: 100%;
+  min-height: calc( 100vh - 100px );;
 `
 
 export const MainContent = styled.section`

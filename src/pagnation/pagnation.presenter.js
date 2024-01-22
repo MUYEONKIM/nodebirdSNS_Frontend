@@ -1,6 +1,6 @@
 import { Page } from "./pagnation.styles";
 
-export default function Paginations(
+export default function PaginationsPresenter(
   props
 ) {
   return (

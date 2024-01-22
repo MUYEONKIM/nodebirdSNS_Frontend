@@ -27,10 +27,6 @@ export const Row = styled.div`
   height: 52px;
   line-height: 52px;
   border-bottom: 1px solid gray;
-
-  :hover {
-    color: blue;
-  }
 `;
 
 export const ColumnHeaderBasic = styled.div`

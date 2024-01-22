@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAxios } from '../../src/axios';
 import { useRouter } from 'next/router';
 import { getDate } from '../../src/getDate';
-import Paginations from '../../src/pagnation/pagnation.presenter';
+import Paginations from '../../src/pagnation/pagnation.contatiner';
 
 export default function Home() {
   useEffect(() => {
@@ -16,15 +16,13 @@ export default function Home() {
   }, [])
   const [data, setData] = useState();
   const [search, setSearch] = useState();
-  const [startPage, setStartPage] = useState(1);
-  const [activedPage, setActivedPage] = useState(1);
   const lastPage = Math.ceil((data?.length ?? 10) / 10);
 
   const api = useAxios();
   const router = useRouter();
 
   const onClickRouter = () => (query) => {
-    router.push(`/board/${query.target.id}`)
+    router.push(`/board/${query.currentTarget.id}`)
   }
 
   const onChangeSearch = (data) => {
@@ -33,7 +31,6 @@ export default function Home() {
 
   const getSearchData = async (data) => {
     let page = data.page
-    console.log(page)
     const result = await api.get('/board/posts',
       {
         params: {
@@ -42,27 +39,6 @@ export default function Home() {
         }
       })
     setData(result?.data);
-  };
-
-  const onClickPage = (event) => {
-    const activedPage = event.currentTarget.id;
-    setActivedPage(activedPage);
-    getSearchData({ page: activedPage });
-  };
-
-  const onClickPrevPage = () => {
-    if (startPage === 1) return;
-    setStartPage(startPage - 10);
-    setActivedPage(startPage - 10);
-    getSearchData({ page: startPage - 10 });
-  };
-
-  const onClickNextPage = () => {
-    if (startPage + 10 <= lastPage) {
-      setStartPage(startPage + 10);
-      setActivedPage(startPage + 10);
-      getSearchData({ page: startPage + 10 });
-    }
   };
 
   return (
@@ -83,12 +59,12 @@ export default function Home() {
           <S.ColumnHeaderBasic>날짜</S.ColumnHeaderBasic>
         </S.Row>
         {data?.payload.map((el) => (
-          <S.Row key={el.id} onClick={onClickRouter(el.id)}>
+          <S.Row key={el.id} id={el.id} onClick={onClickRouter(el.id)}>
             <S.ColumnBasic>
               {el.id}
             </S.ColumnBasic>
             <S.ColumnTitle
-              id={el.id}
+
             >
               {el.title}
             </S.ColumnTitle>
@@ -98,12 +74,9 @@ export default function Home() {
         ))}
         <div style={{ display: "flex", justifyContent: "center", marginTop: "3%" }}>
           <Paginations
-            startPage={startPage}
             lastPage={lastPage}
-            activedPage={activedPage}
-            onClickPage={onClickPage}
-            onClickPrevPage={onClickPrevPage}
-            onClickNextPage={onClickNextPage} />
+            getSearchData={getSearchData}
+          />
         </div>
       </S.MainContent>
     </S.MainWrapper>

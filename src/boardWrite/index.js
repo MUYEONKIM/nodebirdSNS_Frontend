@@ -43,7 +43,7 @@ export default function BoardWrite(props) {
       const result2 = await api.post('http://localhost:8001/post',
         {
           title: data.title,
-          content: data.content,
+          content: data.contents,
           img: result.data.url,
         })
       console.log(result2)

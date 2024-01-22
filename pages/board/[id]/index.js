@@ -1,9 +1,10 @@
 import { useAxios } from "../../../src/axios"
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import * as S from "../../../styles/boardDetail.style";
 import { getDate } from "../../../src/getDate";
 import BoardComment from "../../../src/boardComment";
+import DOMPurify from "dompurify";
 
 export default function BoardDetail() {
   const router = useRouter();
@@ -21,11 +22,6 @@ export default function BoardDetail() {
 
   const onChangeComment = (data) => {
     setComment(data.target.value)
-  }
-
-  const onClickFollow = (data) => async () => {
-    const result = await api.post(`/user/${data}/follow`);
-    console.log(data)
   }
 
   const onClickComment = async () => {
@@ -59,10 +55,17 @@ export default function BoardDetail() {
           <S.AlertButton onClick={onClickDelete}>/ 삭제</S.AlertButton>
         </S.AlertSection>
         <S.ContentMiddle>
-          <p>
-            {content?.content}
-          </p>
-          <S.ContentImg src={`http://localhost:8001${content?.img}`} />
+          {typeof window !== "undefined" && (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(
+                  content?.content ?? "",
+                ),
+              }}
+            />
+          )}
+          {content?.img ?
+            <S.ContentImg src={`http://localhost:8001${content?.img}`} /> : <></>}
         </S.ContentMiddle>
         <S.TableBotton />
         <S.CommentInput onChange={onChangeComment} placeholder="댓글을 등록해주세요." />

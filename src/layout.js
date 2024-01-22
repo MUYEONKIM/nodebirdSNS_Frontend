@@ -3,10 +3,12 @@ import * as S from "../styles/layout.style";
 import { useRecoilState } from "recoil";
 import { tokenState, userState } from "./store";
 import { useAxios } from "./axios";
+import { useRouter } from "next/router";
 
 export default function Layout({ children }) {
   const [user, setUser] = useRecoilState(userState);
   const [, setToken] = useRecoilState(tokenState);
+  const router = useRouter();
 
   const api = useAxios();
 
@@ -15,7 +17,12 @@ export default function Layout({ children }) {
     localStorage.clear();
     setUser();
     setToken();
-    console.log(result)
+    alert(result.data)
+    router.push('/')
+  }
+
+  const login = () => {
+    router.push('/')
   }
 
   return (
@@ -34,7 +41,7 @@ export default function Layout({ children }) {
           {user ?
             <S.LayoutMenu onClick={logout}>LOGOUT</S.LayoutMenu>
             :
-            <S.LayoutMenu>LOGIN</S.LayoutMenu>
+            <S.LayoutMenu onClick={login}>LOGIN</S.LayoutMenu>
           }
         </Link>
       </S.LayoutHeader>
