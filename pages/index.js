@@ -39,12 +39,18 @@ export default function Home() {
     }
   };
 
+  const a = async () => {
+    const result = await axios.get('http://localhost:8001/auth/kakao/callback')
+    console.log(result)
+  }
+
   // 내가 쓴 게시물
   // 찜한 게시물
 
   return (
     <S.MainWrapper>
       <S.MainContent>
+        <button onClick={a}>asd</button>
         <S.MainForm onSubmit={handleSubmit(onClickSubmit)}>
           <S.title>LOGIN</S.title>
           <S.Contentarticle>EMAIL<S.ContentInput type="text" {...register("email")} /></S.Contentarticle>

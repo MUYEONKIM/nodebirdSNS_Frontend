@@ -37,13 +37,13 @@ export const Row = styled.div`
 `;
 
 export const ColumnHeaderBasic = styled.div`
-font-weight: bolder;
+  font-weight: bolder;
   width: 15%;
   text-align: center;
 `;
 
 export const ColumnHeaderTitle = styled.div`
-font-weight: bolder;
+  font-weight: bolder;
   width: 55%;
   text-align: center;
 `;
