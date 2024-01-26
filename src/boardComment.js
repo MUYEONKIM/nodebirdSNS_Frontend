@@ -13,21 +13,29 @@ export default function BoardComment(props) {
   const onChangeComment = (data) => {
     setComment(data.target.value)
   }
-
   const onClickComment = async () => {
-    await api.patch(`/post/comment/${props.el.id}`, { comment });
-    const result = await api.get(`/board/post/${router.query.id}`);
-    props.setContent(result.data.payload)
-    setIsEdit((curr) => !curr)
+    try {
+      await api.patch(`/post/comment/${props.el.id}`, { comment });
+      const result = await api.get(`/board/post/${router.query.id}`);
+      props.setContent(result.data.payload)
+      setIsEdit((curr) => !curr)
+    } catch (error) {
+      setIsEdit((curr) => !curr)
+      alert(error.response.data.message)
+    }
   }
 
   const onClickDelete = async () => {
     const confirmflag = confirm("정말 삭제하시겠습니까?");
 
     if (confirmflag) {
-      await api.delete(`/post/comment/${props.el.id}`);
-      const result = await api.get(`/board/post/${router.query.id}`);
-      props.setContent(result.data.payload)
+      try {
+        await api.delete(`/post/comment/${props.el.id}`);
+        const result = await api.get(`/board/post/${router.query.id}`);
+        props.setContent(result.data.payload)
+      } catch (error) {
+        alert(error.response.data.message)
+      }
     } else {
       return
     }

@@ -16,9 +16,8 @@ export default function Mypage() {
     getData()
   }, [])
   const [content, setContent] = useState();
-  const [search, setSearch] = useState();
   const lastPage = Math.ceil((content?.length ?? 10) / 10);
-  const [user, setUser] = useRecoilState(userState);
+  const [user] = useRecoilState(userState);
   const router = useRouter();
   const api = useAxios();
 
@@ -36,8 +35,6 @@ export default function Mypage() {
   const onClickRouter = () => (data) => {
     router.push(`/board/${data.currentTarget.id}`)
   }
-
-  console.log(user)
 
   return (
     <S.ContentWrapper>

@@ -47,8 +47,9 @@ export default function BoardWrite(props) {
           img: result.data.url,
         })
       console.log(result2)
+      router.push(`/board/${result2.data.id}`)
     } catch (error) {
-      console.error(error.message)
+      alert(error.response.data.message)
     }
   };
 
@@ -62,15 +63,20 @@ export default function BoardWrite(props) {
   }
 
   const onClickUpdate = async (data) => {
-    if (!data.title) {
-      data.title = props.data.title
+    try {
+      if (!data.title) {
+        data.title = props.data.title
+      }
+      await api.patch(`/board/post/${router.query.id}`, {
+        title: data.title,
+        content: data.contents,
+        img: imageURL
+      })
+      router.push(`/board/${router.query.id}`)
+    } catch (error) {
+      alert(error.response.data.message)
+      router.back();
     }
-    await api.patch(`/board/post/${router.query.id}`, {
-      title: data.title,
-      content: data.contents,
-      img: imageURL
-    })
-    router.push(`/board/${router.query.id}`)
   }
   return (
     <S.MainWrapper>

@@ -17,7 +17,6 @@ export default function BoardDetail() {
     };
     getData();
   }, [router.query.id])
-
   const api = useAxios();
 
   const onChangeComment = (data) => {
@@ -35,9 +34,14 @@ export default function BoardDetail() {
     const confirmflag = confirm("정말 삭제하시겠습니까?");
 
     if (confirmflag) {
-      const result = await api.delete(`/board/post/${router.query.id}`);
-      console.log(result)
-      router.push("/board")
+      try {
+        const result = await api.delete(`/board/post/${router.query.id}`);
+        console.log(result)
+        router.push("/board")
+      } catch (error) {
+        alert(error.response.data.message)
+        return
+      }
     } else {
       return
     }

@@ -10,7 +10,7 @@ const baseURL = "http://localhost:8001";
 
 export const useAxios = () => {
   const [token, setToken] = useRecoilState(tokenState)
-
+  console.log(token)
   const axiosInstance = axios.create({
     baseURL,
     headers: { Authorization: token },

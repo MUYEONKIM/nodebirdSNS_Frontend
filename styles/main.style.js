@@ -25,6 +25,7 @@ export const JoinContent = styled.section`
   padding: 50px;
   height: 600px;
   width: 400px;
+  border: 1px solid white;
 `
 
 export const MainForm = styled.form`

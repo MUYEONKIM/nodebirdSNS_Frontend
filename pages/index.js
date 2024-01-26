@@ -24,8 +24,8 @@ export default function Home() {
   const onClickSubmit = async (data) => {
     try {
       const result = await axios.post('http://localhost:8001/auth/login', data, { withCredentials: true })
-      setToken(token);
       const token = result.data.token
+      setToken(token);
       const tokeninfo = jwtDecode(token)
       const user = {
         id: tokeninfo.id,
@@ -38,19 +38,12 @@ export default function Home() {
       alert(error.response.data)
     }
   };
-
-  const a = async () => {
-    const result = await axios.get('http://localhost:8001/auth/kakao/callback')
-    console.log(result)
-  }
-
   // 내가 쓴 게시물
   // 찜한 게시물
 
   return (
     <S.MainWrapper>
       <S.MainContent>
-        <button onClick={a}>asd</button>
         <S.MainForm onSubmit={handleSubmit(onClickSubmit)}>
           <S.title>LOGIN</S.title>
           <S.Contentarticle>EMAIL<S.ContentInput type="text" {...register("email")} /></S.Contentarticle>
