@@ -10,6 +10,10 @@ import Paginations from '../../src/pagnation/pagnation.contatiner';
 export default function Mypage() {
   useEffect(() => {
     const getData = async () => {
+      if (!user) {
+        alert("로그인이 필요합니다");
+        router.push('/');
+      }
       const result = await api.get(`/board/posts/${user.id}`);
       setContent(result?.data)
     };

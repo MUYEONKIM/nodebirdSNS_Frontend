@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 export const MainWrapper = styled.section`
   display: flex;
-  /* height: calc( 100vh - 100px ); */
+  min-height: calc( 100vh - 100px );;
   align-items: center;
 `
 
@@ -15,6 +15,7 @@ export const MainContent = styled.section`
   padding: 50px;
   width: 800px;
   margin-top: 50px;
+  /* height: 100%; */
 `
 
 export const title = styled.textarea`

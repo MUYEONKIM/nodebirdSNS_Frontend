@@ -4,7 +4,6 @@ import { useAxios } from "./axios";
 import { useRouter } from "next/router";
 
 export default function BoardComment(props) {
-  const api = useAxios();
   const router = useRouter();
 
   const [isEdit, setIsEdit] = useState(false);
@@ -15,8 +14,8 @@ export default function BoardComment(props) {
   }
   const onClickComment = async () => {
     try {
-      await api.patch(`/post/comment/${props.el.id}`, { comment });
-      const result = await api.get(`/board/post/${router.query.id}`);
+      await props.api.patch(`/post/comment/${props.el.id}`, { comment });
+      const result = await props.api.get(`/board/post/${router.query.id}`);
       props.setContent(result.data.payload)
       setIsEdit((curr) => !curr)
     } catch (error) {
@@ -30,8 +29,8 @@ export default function BoardComment(props) {
 
     if (confirmflag) {
       try {
-        await api.delete(`/post/comment/${props.el.id}`);
-        const result = await api.get(`/board/post/${router.query.id}`);
+        await props.api.delete(`/post/comment/${props.el.id}`);
+        const result = await props.api.get(`/board/post/${router.query.id}`);
         props.setContent(result.data.payload)
       } catch (error) {
         alert(error.response.data.message)

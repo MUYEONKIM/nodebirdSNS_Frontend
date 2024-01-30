@@ -24,10 +24,14 @@ export default function BoardDetail() {
   }
 
   const onClickComment = async () => {
-    await api.post('/post/comment', { comment, PostId: content.id });
-    const result = await api.get(`/board/post/${router.query.id}`);
-    setContent(result.data.payload);
-    setComment();
+    try {
+      await api.post('/post/comment', { comment, PostId: content.id });
+      const result = await api.get(`/board/post/${router.query.id}`);
+      setContent(result.data.payload);
+      setComment();
+    } catch (error) {
+      alert(error.response.data.message)
+    }
   }
 
   const onClickDelete = async () => {
@@ -75,7 +79,7 @@ export default function BoardDetail() {
         <S.CommentInput onChange={onChangeComment} placeholder="댓글을 등록해주세요." />
         <S.CommentButton onClick={onClickComment}>등록</S.CommentButton>
         {content?.Comments.map((el, index) => (
-          <BoardComment el={el} index={index} setContent={setContent} />
+          <BoardComment el={el} index={index} setContent={setContent} api={api} />
         ))}
       </S.MainContent>
     </S.MainWrapper>
