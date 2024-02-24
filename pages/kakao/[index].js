@@ -15,6 +15,7 @@ export default function Kakao() {
     if (!token) {
       alert("잘못된 접근입니다.")
       return router.push('/')
+      console.log("q")
     }
     setToken(token)
     const tokeninfo = jwtDecode(token);
