@@ -19,7 +19,7 @@ export default function Home() {
   const { register, handleSubmit } = useForm();
 
   const router = useRouter();
-  const api = useAxios();
+
 
   const onClickSubmit = async (data) => {
     try {
