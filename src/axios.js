@@ -14,7 +14,7 @@ export const useAxios = () => {
     baseURL,
     headers: { Authorization: token },
     withCredentials: true
-  }); // 중요! Bearer 인증 방식을 알려주기 위해 'Bearer Token'형식으로 보내줘야합니다.
+  });
 
   // axiosInstance.interceptors.request.use(async req => {
   //   const user = jwt_decode(authTokens.access);
