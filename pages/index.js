@@ -38,6 +38,7 @@ export default function Home() {
       alert(error.response.data)
     }
   };
+  console.log("qwe")
   // 내가 쓴 게시물
   // 찜한 게시물
 
